@@ -1,0 +1,25 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test-aquilon-tools:
+    runs-on: ubuntu-latest
+    container: ghcr.io/quattor/quattor-test-container:latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Install Dependencies
+      run: dnf -y install python3 python3-tqdm python3-termcolor python3-lxml zlib-devel automake ksh
+    - name: Configure
+      run: |
+        cd aquilon || exit 1
+        ./configure ZLIB_DIR=/usr/lib64/ ZLIB_INC=/usr/include/ --prefix="$(mktemp -d || exit 1)" || exit 1
+    - name: Make, Check, Install
+      run: |
+        cd aquilon
+        make
+        make check
+        make install
+        make installcheck
+
