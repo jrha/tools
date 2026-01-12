@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # See COPYRIGHT file in source distribution for copyright holders
@@ -39,7 +39,7 @@ CCM_PROFILE = CCM_DIR + "/profile.<CID>/profile"
 def usage():
     """ Displays a usage message. """
 
-    print """
+    print("""
 Syntax: %s [-ehIkv] [-o <output>] <file> [<resource_path ...>]
         %s [-ehIkv] [-o <output>] -c [<resource_path ...>]
         %s [-ehIkv] [-o <output>] -g {<host>|<alias>} [<resource_path ...>]
@@ -76,7 +76,7 @@ Example:
            /software/packages
 
     %s -g ilab901.one-nyp /metadata
-""" % (CALL, CALL, CALL, CALL, CALL, CALL, CALL)
+""" % (CALL, CALL, CALL, CALL, CALL, CALL, CALL))
     return 1
 
 ##############################################################################
@@ -238,7 +238,7 @@ def walk_dict(d, root="", node=None,
             walk_dict(d[key], root=path,
                       output=output, xdup=xdup, xout=xout)
         elif type(d[key]) is list:
-            for i in xrange(0, len(d[key])):
+            for i in range(0, len(d[key])):
                 if gen_indices:
                     lpath = path + "/" + str(i)
                 else:
@@ -335,7 +335,7 @@ def main(args=sys.argv, outfile=sys.stdout, xdup=None, xout=None):
     try:
         opts, args = getopt.getopt(args[1:], "cDeG:g:hIko:pv")
     except getopt.GetoptError as err:
-        print "%s: %s" % (CALL, str(err))
+        print("%s: %s" % (CALL, str(err)))
         return 1
 
     debug = hide_terminals = value_only = False
@@ -412,7 +412,7 @@ def main(args=sys.argv, outfile=sys.stdout, xdup=None, xout=None):
         try:
             tree = etree.parse(fname)
         except Exception as err:
-            print "%s: %s: %s" % (CALL, str(err), fname)
+            print("%s: %s: %s" % (CALL, str(err), fname))
             return 1
 
         if len(args) == 0:

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # See COPYRIGHT file in source distribution for copyright holders
@@ -28,7 +28,7 @@ import subprocess
 from subprocess import Popen, PIPE
 import re
 from time import sleep
-from cStringIO import StringIO
+from io import StringIO
 import gzip
 from copy import copy
 import signal
@@ -72,17 +72,17 @@ stderr_lock = Lock()
 def syntax():
     """ Displays command syntax. """
 
-    print """\
+    print("""\
 Syntax: %s [-DaefGgIikPrx] [-d <re>] [-o <output>] [-p <workers>] \\
                  [-U <lines>] [-z <compresslevel>] <dir1> <dir2>
         %s -h\
-""" % (CALL, CALL)
+""" % (CALL, CALL))
 
 def usage():
     """ Displays a usage message. """
 
     syntax()
-    print """
+    print("""
 Find differences between host profiles in two distinct directories. The
 directories should each contain the same number of profiles with the same names.
 
@@ -119,13 +119,13 @@ directories should each contain the same number of profiles with the same names.
           level of compression to use when writing gzip files via the -x
           option, where 1 is fastest with least compression, 9 is slowest
           with best compression and 0 is no compression.  Default is %d.
-""" % GZIP_COMPRESS_LEVEL
+""" % GZIP_COMPRESS_LEVEL)
 
 ##############################################################################
 
 def chunks(l, n):
     """ Yield successive n-sized chunks from l. """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 def rifle_worker(filelist):
@@ -144,7 +144,7 @@ def rifle_worker(filelist):
 
         outdir = os.path.dirname(outfile)
         if not os.path.exists(outdir):
-            os.makedirs(outdir, 0700)
+            os.makedirs(outdir, mode=0o0700)
 
         if transcmd[0] == TRIFLE and \
                 (infile[-5:] == ".json" or infile[-8:] == ".json.gz"):
@@ -230,8 +230,8 @@ def do_translations(numworkers, dir1, dir2):
     else:
         transdir1 = tmpdir + "/1"
         transdir2 = tmpdir + "/2"
-        os.mkdir(transdir1, 0700)
-        os.mkdir(transdir2, 0700)
+        os.mkdir(transdir1, mode=0o0700)
+        os.mkdir(transdir2, mode=0o0700)
 
     #
     # Get list of files to translate
@@ -372,9 +372,9 @@ def run_diff(numworkers, outfile, dir1, dir2):
 
         for line in output.getvalue().splitlines():
             if line[0:7] == "Only in":
-                print line
+                print(line)
             else:
-                outfp.write(line + "\n")
+                outfp.write(bytes(line + "\n", 'utf-8'))
 
         outfp.flush()
         cmd = [GIT_DIFFUNIQ] + uniqopt + [outfp.name]
@@ -403,7 +403,7 @@ def run_diff(numworkers, outfile, dir1, dir2):
                                 pname = re.sub("\"", "", pname)
                                 personalities.add(pname)
 
-            outfile.write(line + "\n")
+            outfile.write(str(line) + "\n")
 
     if len(profiles) > 0:
         outfile.write("@@ %d profile%s changed\n" %
@@ -436,7 +436,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "aDd:efGghIiko:Pp:rU:xz:")
     except getopt.GetoptError as err:
-        print "%s: %s" % (CALL, str(err))
+        print("%s: %s" % (CALL, str(err)))
         return 1
 
     debug = False

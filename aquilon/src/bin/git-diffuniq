@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # See COPYRIGHT file in source distribution for copyright holders
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -29,7 +29,7 @@ blobhash = {}
 def usage():
     """ Displays a usage message. """
 
-    print """
+    print("""
 Syntax: %s [-a] [-d <re>] <filename>
 
 Takes diff output from git and produces a set of the unique differences.
@@ -44,7 +44,7 @@ each unique difference.  If it matches, that particular difference is
 discarded.  This is useful for filtering out changes that you wish to
 ignore.  You may specify the -d option multiple times to test against
 multiple REs.
-""" % CALL
+""" % CALL)
     exit(1)
 
 ##############################################################################
@@ -72,13 +72,13 @@ def display_blobs(discard, add_files):
             if re.search(s, blob): ign_blob = True
 
         if not ign_blob:
-            print "@@ Difference #%d Occurrences #%d" % \
-                                        (count, len(blobhash[blob]))
+            print("@@ Difference #%d Occurrences #%d" % \
+                                        (count, len(blobhash[blob])))
             if add_files:
-                print "@@ Modified in: " + \
-                            ("\n@@ Modified in: ".join(sorted(blobhash[blob])))
+                print("@@ Modified in: " + \
+                            ("\n@@ Modified in: ".join(sorted(blobhash[blob]))))
 
-            print blob,
+            print(blob,)
             count += 1
 
 ##############################################################################
@@ -91,7 +91,7 @@ def remove_common_path(line):
     paths = [lst[-2], lst[-1]]
     common = os.path.commonprefix(paths)
     return lst[-1][common.rfind("/")+1:]
-    
+
 ##############################################################################
 
 def grab_filechunk(f):
@@ -148,7 +148,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "ad:h")
     except getopt.GetoptError as err:
-        print str(err)
+        print(str(err))
         exit(1)
 
     add_files = False
@@ -161,11 +161,11 @@ def main():
     file = args[0]
 
     if not os.path.exists(file):
-        print "%s: file not found: %s" % (CALL, file)
+        print("%s: file not found: %s" % (CALL, file))
         exit(1)
 
     if os.path.getsize(file) == 0:
-        print "%s: file is empty (no differences): %s" % (CALL, file)
+        print("%s: file is empty (no differences): %s" % (CALL, file))
         exit(0)
 
     with open(file, "r") as f:

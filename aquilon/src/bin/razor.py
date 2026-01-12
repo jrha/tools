@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # See COPYRIGHT file in source distribution for copyright holders
@@ -46,17 +46,17 @@ stderr_lock = Lock()
 
 def syntax():
     """ Displays command syntax. """
-    print """\
+    print("""\
 Syntax: %s [-DdGg] [-i <include>] [-o <output>] [-p <workers>] \\
                             [-x <exclude>] [-- <diff-options>] <dir1> <dir2>
         %s -h\
-""" % (CALL, CALL)
+""" % (CALL, CALL))
 
 def usage():
     """ Displays a usage message. """
 
     syntax()
-    print """
+    print("""
 Multi-process recursive diff tool with support for compressed files, where
 
     -D    turn on debugging.
@@ -81,13 +81,13 @@ Multi-process recursive diff tool with support for compressed files, where
           additional options to pass to each individual diff command.
   <dir1>  first directory containing files and directories to compare.
   <dir2>  second directory containing files and directories to compare against.
-"""
+""")
 
 ##############################################################################
 
 def chunks(l, n):
     """ Yield successive n-sized chunks from l. """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 def gunzip_to_temp(fname):
@@ -330,7 +330,7 @@ def main(args=sys.argv, outfile=sys.stdout):
     try:
         opts, args = getopt.getopt(args[1:], "DdGghi:o:p:x:")
     except getopt.GetoptError as err:
-        print "%s: %s" % (CALL, str(err))
+        print("%s: %s" % (CALL, str(err)))
         return 2
 
     debug = decompress = outopen = False

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##############################################################################
 #
 # See COPYRIGHT file in source distribution for copyright holders
@@ -38,8 +38,8 @@ last_col = default_col
 def usage():
     """ Displays a usage message. """
 
-    print """
-Syntax: %s [-h] [-d <delimit>] [-k <colcode>] \\
+    print(f"""
+Syntax: {CALL} [-h] [-d <delimit>] [-k <colcode>] \\
                 [-r <re>] [-v <colcode>] [-x <colcode>]
 
 Adds colour to key/value pairs on stdin.
@@ -47,11 +47,11 @@ Adds colour to key/value pairs on stdin.
 Options:
     -h            to display this help message.
     -d <delim>    changes RE used for identifying key/value delimiter.
-                  Default is '%s'.
-    -k <colcode>  changes colour for keys.  Default is '%s'.
+                  Default is '{default_delim}'.
+    -k <colcode>  changes colour for keys.  Default is '{default_col[0]}'.
     -r <re>       highlight wherever regex matches.
-    -v <colcode>  changes colour for values.  Default is '%s'.
-    -x <colcode>  changes colour for regex.  Default is '%s'.
+    -v <colcode>  changes colour for values.  Default is '{default_col[1]}'.
+    -x <colcode>  changes colour for regex.  Default is '{default_col[2]}'.
 
 <colcode> can describe text colours, highlights and attributes.
 The format is: [<colour>][:<attribute>[,<attribute> ...]] where
@@ -68,7 +68,7 @@ otherwise use their default colour.
 The colours may also be changed using the environment variables
 CKEY_COL1 for keys, CKEY_COL2 for values, CKEY_COL3 for regex e.g.
     $ export CKEY_COL1=blue CKEY_COL2=white CKEY_COL3=red:underline
-""" % (CALL, default_delim, default_col[0], default_col[1], default_col[2])
+""")
 
 def add_colour(text, colcode, coltype):
     """ Splits colcode into colour, highlights and attributes before
@@ -76,7 +76,7 @@ def add_colour(text, colcode, coltype):
         is colon-separated, the first field is the colour, the
         second field is a comma-separated list of text highlights
         and attributes, e.g. green:on_red,bold
-        
+
         coltype is 0 for keys, 1 for values and 2 for regexes. """
     global last_col
 
@@ -121,8 +121,8 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:hk:r:v:x:")
     except getopt.GetoptError as err:
-        print str(err)
-        print "Type: '%s -h' for help" % CALL
+        print(str(err))
+        print("Type: '%s -h' for help" % CALL)
         exit(1)
 
     for o, a in opts:
@@ -190,7 +190,7 @@ def main():
 
         #
         # Apply regex highlight if we have one
-        # 
+        #
         if regex_hi != None:
             c = 0
             hline = ""
@@ -201,6 +201,6 @@ def main():
 
             nline = hline
 
-        print nline
+        print(nline)
 
 if __name__ == "__main__": main()
